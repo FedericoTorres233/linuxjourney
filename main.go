@@ -25,6 +25,7 @@ func initialModel() model {
 
 // Init can be used for initial commands you might want to run when the program starts
 func (m model) Init() tea.Cmd {
+	//log.Println("LinuxJourney started")
 	return nil
 }
 
@@ -43,7 +44,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.cursor < len(m.choices)-1 {
 				m.cursor++
 			}
-		case "enter", " ":
+		case "enter", "l":
 			if m.cursor == len(m.choices)-1 { // "Everything" is selected
 				return m, tea.Quit
 			} else {
@@ -65,9 +66,13 @@ func (m model) View() string {
 	s := string(utils.LoadAsciiArt())
 
 	for i, choice := range m.choices {
+		// Choice is every option in the loop
+		// Checked is a boolean that checks status
+		// Cursor is cursor
+
 		cursor := " "
 		if m.cursor == i {
-			cursor = "▸" // cursor!
+			cursor = "▸" // cursor
 		}
 
 		checked := " "
