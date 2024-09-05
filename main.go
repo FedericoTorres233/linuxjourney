@@ -1,22 +1,23 @@
 package main
 
 import (
-	"federicotorres233/mylinuxjourney/internal/terminal"
+	"federicotorres233/mylinuxjourney/internal/game"
 	"federicotorres233/mylinuxjourney/internal/utils"
 	"fmt"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"golang.org/x/term"
 )
 
 const (
+	startpage   int = iota
 	startScreen int = iota
 	gameScreen
 )
 
 // model holds the state of our application
 type model struct {
+	page     int
 	state    int
 	choices  []string
 	cursor   int
@@ -26,6 +27,7 @@ type model struct {
 // initialize the model
 func initialModel() model {
 	return model{
+		page:     startpage,
 		state:    startScreen,
 		choices:  []string{"Start", "Continue", "Progress", "Exit"},
 		selected: make(map[int]struct{}),
@@ -49,6 +51,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.state = startScreen
 			}
+		case "h", "left":
+			if m.page <= 1 {
+				m.state = startScreen
+				m.page = 1
+				break
+			}
+			m.page--
 		case "up", "k":
 			if m.cursor > 0 {
 				m.cursor--
@@ -57,7 +66,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.cursor < len(m.choices)-1 {
 				m.cursor++
 			}
-		case "enter", "l":
+		case "enter", "l", "right":
 			if m.state == startScreen {
 
 				switch m.cursor {
@@ -77,6 +86,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.selected[m.cursor] = struct{}{}
 				}
 
+			} else {
+				// Outside start screen
+				m.page++
 			}
 		}
 	}
@@ -88,11 +100,11 @@ func (m model) View() string {
 
 	s := string(utils.LoadAsciiArt())
 
-	// Get the terminal width
+	/* Get the terminal width
 	width, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
 		width = 0 // Default width if we can't get the terminal size
-	}
+	}*/
 
 	switch m.state {
 	case startScreen:
@@ -106,12 +118,15 @@ func (m model) View() string {
 				cursor = "▸" // cursor
 			}
 
-			s += terminal.DisplayMainOption(width, cursor, choice)
+			// Don't center for now
+			//s += terminal.DisplayMainOption(width, cursor, choice)
+			s += fmt.Sprintf("%s [ %s ] \n", cursor, choice)
 
 		}
 		return s
 	case gameScreen:
-		return "Welcome to your journey!\nPress 'q' to quit."
+		fmt.Println(m.page)
+		return game.StartJourney()
 	}
 	return "Unknown state"
 
