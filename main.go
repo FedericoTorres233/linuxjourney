@@ -120,7 +120,7 @@ func (m model) View() string {
 
 			// Don't center for now
 			//s += terminal.DisplayMainOption(width, cursor, choice)
-			s += fmt.Sprintf("%s [ %s ] \n", cursor, choice)
+			s += fmt.Sprintf("%s { %s } \n", cursor, choice)
 
 		}
 		return s
@@ -131,7 +131,7 @@ func (m model) View() string {
 		fmt.Println(m.page)
 		return padding + txt
 	}
-	return "Unknown state"
+	return ""
 
 }
 
