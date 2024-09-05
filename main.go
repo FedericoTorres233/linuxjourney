@@ -1,10 +1,12 @@
 package main
 
 import (
+	"federicotorres233/mylinuxjourney/internal/terminal"
 	"federicotorres233/mylinuxjourney/internal/utils"
 	"fmt"
 	"os"
 
+	"golang.org/x/term"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -18,7 +20,7 @@ type model struct {
 // initialize the model
 func initialModel() model {
 	return model{
-		choices:  []string{"Start Journey", "Continue", "Progress", "Exit"},
+		choices:  []string{"Start", "Continue", "Progress", "Exit"},
 		selected: make(map[int]struct{}),
 	}
 }
@@ -45,16 +47,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 		case "enter", "l":
-			if m.cursor == len(m.choices)-1 { // "Everything" is selected
-				return m, tea.Quit
-			} else {
+			if m.cursor != len(m.choices)-1 { // Exit selected
 				_, ok := m.selected[m.cursor]
 				if ok {
+					// 
 					delete(m.selected, m.cursor)
 				} else {
 					m.selected[m.cursor] = struct{}{}
 				}
+				break
 			}
+
+			return m, tea.Quit
 		}
 	}
 	return m, nil
@@ -64,6 +68,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 
 	s := string(utils.LoadAsciiArt())
+
+	// Get the terminal width
+    width, _, err := term.GetSize(int(os.Stdout.Fd()))
+    if err != nil {
+        width = 0 // Default width if we can't get the terminal size
+    }
 
 	for i, choice := range m.choices {
 		// Choice is every option in the loop
@@ -75,20 +85,17 @@ func (m model) View() string {
 			cursor = "▸" // cursor
 		}
 
-		checked := " "
-		if _, ok := m.selected[i]; ok || (i == len(m.choices)-1 && len(m.selected) == len(m.choices)-1) {
-			checked = "x"
-		}
-
-		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice)
+		s += terminal.DisplayMainOption(width, cursor, choice)
+		
 	}
 	return s
 }
 
 func main() {
 	p := tea.NewProgram(initialModel())
+
 	if _, err := p.Run(); err != nil {
-		fmt.Printf("Alas, there's been an error: %v", err)
+		fmt.Printf("There's been an error: %v", err)
 		os.Exit(1)
 	}
 }
