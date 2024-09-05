@@ -1,7 +1,7 @@
 package main
 
 import (
-	"federicotorres233/mylinuxjourney/internal/game"
+	"federicotorres233/mylinuxjourney/internal/markdown"
 	"federicotorres233/mylinuxjourney/internal/utils"
 	"fmt"
 	"os"
@@ -125,8 +125,11 @@ func (m model) View() string {
 		}
 		return s
 	case gameScreen:
+		utils.ClearScreen()
+		padding := "\n"
+		txt, _ := markdown.ParseMarkdown()
 		fmt.Println(m.page)
-		return game.StartJourney()
+		return padding + txt
 	}
 	return "Unknown state"
 
