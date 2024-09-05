@@ -6,12 +6,18 @@ import (
 	"fmt"
 	"os"
 
-	"golang.org/x/term"
 	tea "github.com/charmbracelet/bubbletea"
+	"golang.org/x/term"
+)
+
+const (
+	startScreen int = iota
+	gameScreen
 )
 
 // model holds the state of our application
 type model struct {
+	state    int
 	choices  []string
 	cursor   int
 	selected map[int]struct{}
@@ -20,6 +26,7 @@ type model struct {
 // initialize the model
 func initialModel() model {
 	return model{
+		state:    startScreen,
 		choices:  []string{"Start", "Continue", "Progress", "Exit"},
 		selected: make(map[int]struct{}),
 	}
@@ -37,7 +44,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
-			return m, tea.Quit
+			if m.state == startScreen {
+				return m, tea.Quit
+			} else {
+				m.state = startScreen
+			}
 		case "up", "k":
 			if m.cursor > 0 {
 				m.cursor--
@@ -47,18 +58,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 		case "enter", "l":
-			if m.cursor != len(m.choices)-1 { // Exit selected
+			if m.state == startScreen {
+
+				switch m.cursor {
+				case 0:
+					// start selected
+					m.state = gameScreen
+					return m, nil
+				case len(m.choices) - 1:
+					// Exit selected
+					return m, tea.Quit
+				}
+
 				_, ok := m.selected[m.cursor]
 				if ok {
-					// 
 					delete(m.selected, m.cursor)
 				} else {
 					m.selected[m.cursor] = struct{}{}
 				}
-				break
-			}
 
-			return m, tea.Quit
+			}
 		}
 	}
 	return m, nil
@@ -70,25 +89,32 @@ func (m model) View() string {
 	s := string(utils.LoadAsciiArt())
 
 	// Get the terminal width
-    width, _, err := term.GetSize(int(os.Stdout.Fd()))
-    if err != nil {
-        width = 0 // Default width if we can't get the terminal size
-    }
-
-	for i, choice := range m.choices {
-		// Choice is every option in the loop
-		// Checked is a boolean that checks status
-		// Cursor is cursor
-
-		cursor := " "
-		if m.cursor == i {
-			cursor = "▸" // cursor
-		}
-
-		s += terminal.DisplayMainOption(width, cursor, choice)
-		
+	width, _, err := term.GetSize(int(os.Stdout.Fd()))
+	if err != nil {
+		width = 0 // Default width if we can't get the terminal size
 	}
-	return s
+
+	switch m.state {
+	case startScreen:
+		for i, choice := range m.choices {
+			// Choice is every option in the loop
+			// Checked is a boolean that checks status
+			// Cursor is cursor
+
+			cursor := " "
+			if m.cursor == i {
+				cursor = "▸" // cursor
+			}
+
+			s += terminal.DisplayMainOption(width, cursor, choice)
+
+		}
+		return s
+	case gameScreen:
+		return "Welcome to your journey!\nPress 'q' to quit."
+	}
+	return "Unknown state"
+
 }
 
 func main() {
