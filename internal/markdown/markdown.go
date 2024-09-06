@@ -4,12 +4,12 @@ import (
 	"os"
 )
 
-func ParseMarkdown() (string, error) {
+func ParseMarkdown(f string) (string, error) {
 
-	mdContent, err := os.ReadFile("public/pages/start.md")
+	mdContent, err := os.ReadFile(f)
 	if err != nil {
 		return "", err
 	}
-	
+
 	return string(mdContent), nil
 }
