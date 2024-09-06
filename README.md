@@ -7,7 +7,7 @@
   </a>
   <br>
 <p align="center">
-  <em><b>Linux Journey</b> is a terminal based tutorial that guides you through the amazing world of </b>Linux</b></em>
+  <em><b>Linux Journey</b> is a terminal based tutorial that guides you through the amazing world of <b>Linux</b></em>
 </p>
 
 ---
@@ -63,10 +63,25 @@ Done! You can start using it:
 ./bin/linuxjourney
 ```
 
-## 🎯 Features
+## 🎯 Chapters
+Journey chapters are located in the `public/pages` folder:
 
+```
+linuxjourney/
+│
+└── public/
+    │
+    └── pages/
+        │
+        ├── chapter1/ # Start
+        ├── chapter2/ # Intro to linux
+        ├── chapter3/ # Basic commands
+  
+```
+
+<!-- 
 -   Something [Something](example.com)
-
+--->
 ## 👍 Contribute
 
 If you want to say **Thank You** and/or support the project:
