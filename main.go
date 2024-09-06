@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	startpage   int = iota
+	startpage   int = 1
 	startScreen int = iota
 	gameScreen
 )
@@ -125,11 +125,17 @@ func (m model) View() string {
 		}
 		return s
 	case gameScreen:
+		chapter1 := make(map[int]string)
+
+		for i := 1; i < 5; i++ {
+			chapter1[i] = fmt.Sprintf("public/pages/chapter1/%d.md", i)
+
+		}
+
 		utils.ClearScreen()
 		padding := "\n"
-		txt, _ := markdown.ParseMarkdown()
-		fmt.Println(m.page)
-		return padding + txt
+		txt, _ := markdown.ParseMarkdown(chapter1[m.page])
+		return utils.FormatOutput(padding + txt)
 	}
 	return ""
 
