@@ -1,58 +1,48 @@
 <p align="center">
   <a href="https://github.com/federicotorres233">
     <picture>
-      <source height="125" media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/FedericoTorres233/linuxjourney/main/public/logo.jpeg">
-      <img height="125" alt="Linux" src="https://raw.githubusercontent.com/FedericoTorres233/linuxjourney/main/public/logo.jpeg">
+      <source height="250" media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/FedericoTorres233/linuxjourney/main/public/logo.jpeg">
+      <img height="250" alt="Linux" src="https://raw.githubusercontent.com/FedericoTorres233/linuxjourney/main/public/logo.jpeg">
     </picture>
   </a>
   <br>
 <p align="center">
-  <em><b>LinuxJourney</b> is a terminal based tutorial that guides you through the amazing world of </b>Linux</b></em>
+  <em><b>Linux Journey</b> is a terminal based tutorial that guides you through the amazing world of </b>Linux</b></em>
 </p>
 
 ---
 
 ## ⭐️ To do
 
-- ~~Autocopy to clipboard~~
-- ~~Add -—install~~
-- ~~Remove logs && log everything to a logfile~~
-- ~~Use SQLite~~
-- ~~Don't echo passwords~~
-- ~~Show all passwords~~
-- ~~Add dockerfile~~
-- Fancier terminal
-- Organize sensitive files and change permissions
-- ~~Encrypt database~~
-- Concurrency for faster performance
-- Add more options
-- Get by other options
-- CRUD
+- Add progress
+- Add continue
+- Store progress
+- Full vim compatibility
+- Add more pages
+- Command execution
 - Tests
-- ~~Reorganise folders and files~~
-- Select database location
-- More output
+- Add colors
 
 ## ⚙️ Installation
 
-The easiest way to start using GoKeys is to get the latest binary from the github repository.
+The easiest way to start your journey is to get the latest binary from the github repository.
 
 ```bash
-wget -qO- https://github.com/FedericoTorres233/gokeys/releases/download/v0.1.0/gokeys.tar.gz | gzip -d | tar xvfz -
+wget -qO- https://github.com/FedericoTorres233/linuxjourney/releases/download/v0.1.0/linuxjourney.tar.gz | tar xvfz -
 ```
 
-Done! You can start using it:
+Done! You can start now learning ^-^:
 
 ```bash
-gokeys --install # Install password database
+./bin/linuxjourney
 ```
 
 ### Installing from source
 
-GoKeys requires **Go version `1.20` or higher** to run. If you need to install or upgrade Go, visit the [official Go download page](https://go.dev/dl/). Clone the repository and cd into it:
+Linux Journey requires **Go version `1.20` or higher** to run. If you need to install or upgrade Go, visit the [official Go download page](https://go.dev/dl/). Clone the repository and cd into it:
 
 ```bash
-git clone https://github.com/FedericoTorres233/gokeys && cd gokeys
+git clone https://github.com/FedericoTorres233/linuxjourney && cd linuxjourney
 ```
 
 Install project dependencies:
@@ -70,35 +60,7 @@ make
 Done! You can start using it:
 
 ```bash
-./bin/gokeys --install # Install password database
-```
-
-## ⚡️ Quickstart
-
-Here are basic examples of usage: 
-
-```go
-package main
-
-import (
-    "log"
-
-    "github.com/gofiber/fiber/v3"
-)
-
-func main() {
-    // Initialize a new Fiber app
-    app := fiber.New()
-
-    // Define a route for the GET method on the root path '/'
-    app.Get("/", func(c fiber.Ctx) error {
-        // Send a string response to the client
-        return c.SendString("Hello, World 👋!")
-    })
-
-    // Start the server on port 3000
-    log.Fatal(app.Listen(":3000"))
-}
+./bin/linuxjourney
 ```
 
 ## 🎯 Features
@@ -109,6 +71,6 @@ func main() {
 
 If you want to say **Thank You** and/or support the project:
 
-1. Add a [GitHub Star](https://github.com/federicotorres233/gokeys/stargazers) to the project.
-2. Submit a [pull request](https://github.com/FedericoTorres233/gokeys/pulls) to add a new feature
-3. Create an [issue](https://github.com/FedericoTorres233/gokeys/issues) if you find any bug
+1. Add a [GitHub Star](https://github.com/federicotorres233/linuxjourney/stargazers) to the project.
+2. Submit a [pull request](https://github.com/FedericoTorres233/linuxjourney/pulls) to add a new feature
+3. Create an [issue](https://github.com/FedericoTorres233/linuxjourney/issues) if you find any bug
