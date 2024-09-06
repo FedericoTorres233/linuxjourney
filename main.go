@@ -125,16 +125,20 @@ func (m model) View() string {
 		}
 		return s
 	case gameScreen:
-		chapter1 := make(map[int]string)
+		chapters := make(map[int]map[int]string)
 
-		for i := 1; i < 5; i++ {
-			chapter1[i] = fmt.Sprintf("public/pages/chapter1/%d.md", i)
-
+		for i := 1; i <= 5; i++ {
+			chapters[i] = make(map[int]string)
+			for f := 1; f <= 4; f++ {
+				chapters[i][f] = fmt.Sprintf("public/pages/chapter%d/%d.md", i, f)
+			}
 		}
 
+		
+
 		utils.ClearScreen()
-		padding := "\n"
-		txt, _ := markdown.ParseMarkdown(chapter1[m.page])
+		padding := "\n\n\n"
+		txt, _ := markdown.ParseMarkdown(chapters[1][m.page])
 		return utils.FormatOutput(padding + txt)
 	}
 	return ""
