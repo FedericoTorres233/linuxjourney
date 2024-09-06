@@ -105,6 +105,15 @@ func (m model) View() string {
 		width = 0 // Default width if we can't get the terminal size
 	}*/
 
+	chapters := make(map[int]map[int]string)
+
+	for i := 1; i <= 5; i++ {
+		chapters[i] = make(map[int]string)
+		for f := 1; f <= 4; f++ {
+			chapters[i][f] = fmt.Sprintf("public/pages/chapter%d/%d.md", i, f)
+		}
+	}
+
 	switch m.state {
 	case startScreen:
 		for i, choice := range m.choices {
@@ -124,16 +133,6 @@ func (m model) View() string {
 		}
 		return s
 	case gameScreen:
-		chapters := make(map[int]map[int]string)
-
-		for i := 1; i <= 5; i++ {
-			chapters[i] = make(map[int]string)
-			for f := 1; f <= 4; f++ {
-				chapters[i][f] = fmt.Sprintf("public/pages/chapter%d/%d.md", i, f)
-			}
-		}
-
-		
 
 		utils.ClearScreen()
 		padding := "\n\n\n"
