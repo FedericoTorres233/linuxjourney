@@ -9,13 +9,15 @@ import (
 )
 
 const (
-	startpage   int = 1
-	startScreen int = iota
+	startchapter int = 1
+	startpage    int = 1
+	startScreen  int = iota
 	gameScreen
 )
 
 // model holds the state of our application
 type model struct {
+	chapter  int
 	page     int
 	state    int
 	choices  []string
@@ -26,6 +28,7 @@ type model struct {
 // initialize the model
 func InitialModel() model {
 	return model{
+		chapter:  startchapter,
 		page:     startpage,
 		state:    startScreen,
 		choices:  []string{"Start", "Continue", "Progress", "Exit"},
@@ -134,9 +137,14 @@ func (m model) View() string {
 		return s
 	case gameScreen:
 
-		utils.ClearScreen()
+		//utils.ClearScreen()
 		padding := "\n\n\n"
-		txt, _ := markdown.ParseMarkdown(chapters[1][m.page])
+		_, err := markdown.ParseMarkdown(chapters[m.chapter][m.page])
+		if err != nil {
+			m.page = 1
+			m.chapter++
+		}
+		txt, _ := markdown.ParseMarkdown(chapters[m.chapter][m.page])
 		return utils.FormatOutput(padding + txt)
 	}
 	return ""
